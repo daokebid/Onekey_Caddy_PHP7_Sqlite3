@@ -192,32 +192,11 @@ check_system(){
 }
 
 
-#检测依赖
-systemd_chack(){
-echo -e "${OK} ${GreenBG} 正在检测是否支持 systemd ${Font}"
-	for CMD in iptables grep cut xargs systemctl ip awk
-	do
-		if ! type -p ${CMD}; then
-			echo -e "${Error} ${RedBG} 系统过度精简 缺少必要依赖 脚本终止继续安装 ${Font}"
-			exit 1
-		fi
-	done
-	echo -e "${OK} ${GreenBG} 符合安装条件 ${Font}"
-}
+#设定时间去除检测依赖
 
-
-#检测安装完成或失败
-judge(){
-	if [[ $? -eq 0 ]];then
-		echo -e "${OK} ${GreenBG} $1 完成 ${Font}"
-		sleep 1
-	else
-		echo -e "${Error} ${RedBG} $1 失败 ${Font}"
-		echo -e "${Info} ${GreenBG} 脚本终止继续安装 反馈地址：https://git.io/issues4c.sh ${Font}"
-		exit 1
-	fi
-}
-
+echo "  Setting timezone..."
+rm -rf /etc/localtime
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 #设定域名
 domain_set(){
